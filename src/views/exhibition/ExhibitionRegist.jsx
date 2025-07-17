@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import BasicButton from "../../common/button/BasicButton";
 import "../../styless/exhibition/ExhibitionRegist.css";
+import { exhibitionService } from "../../services/exhibitionService";
 
 const ExhibitionRegist = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,8 @@ const ExhibitionRegist = () => {
     discountRate: '',
     isActive: false
   });
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const brands = ['Special', '10 Corso Como', '8 seconds', 'AMI', 'ANOTHER SHOP', 'Alice + Olivia', 'BEAKER', 'BEANPOLE'];
   const themes = ['NEW ARRIVALS', 'SALES', 'REVIEWS', 'POP-UP STORE', '기타 테마'];
@@ -31,8 +34,42 @@ const ExhibitionRegist = () => {
     }));
   };
 
-  const handleSubmit = () => {
-    console.log('기획전 등록 데이터:', formData);
+  const handleSubmit = async () => {
+    setIsLoading(true);
+
+    try {
+      const submitData = {
+        name: formData.name,
+        brand: formData.brand,
+        theme: formData.theme,
+        startDate: formData.startDate,
+        discountRate: formData.discountRate,
+        isActive: formData.isActive
+      };
+
+      console.log('전송할 데이터:', submitData);
+
+      const response = await exhibitionService.createExhibition(submitData);
+
+      console.log('API 응답:', response);
+      alert('기획전이 성공적으로 등록되었습니다!');
+
+    } catch (error) {
+      console.error('등록 실패:', error);
+
+      // axios 에러 처리
+      if (error.response) {
+        console.error('서버 응답 에러:', error.response.data);
+        alert(`등록 실패: ${error.response.data.message || '서버 오류'}`);
+      } else if (error.request) {
+        console.error('요청 에러:', error.request);
+        alert('서버에 연결할 수 없습니다.');
+      } else {
+        alert('기획전 등록에 실패했습니다. 다시 시도해주세요.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -98,8 +135,12 @@ const ExhibitionRegist = () => {
               <label htmlFor="image-upload" className="image-upload-label">
                 파일선택
               </label>
-              {formData.image && (
+              {formData.image ? (
                   <span className="image-name">{formData.image.name}</span>
+              ) : (
+                  <span className={`image-name ${!formData.image ? 'no-file' : ''}`}>
+                    {formData.image ? formData.image.name : '선택된 파일이 없습니다'}
+                  </span>
               )}
             </div>
           </div>
@@ -121,6 +162,8 @@ const ExhibitionRegist = () => {
               <input
                   type="text"
                   name="discountRate"
+                  value={formData.discountRate}
+                  onChange={handleInputChange}
                   className="discount-input"
               />
               <span className="discount-unit">%</span>
@@ -143,8 +186,9 @@ const ExhibitionRegist = () => {
           <BasicButton
               size="medium"
               onClick={handleSubmit}
+              disabled={isLoading}
           >
-            저장
+            {isLoading ? '저장 중...' : '저장'}
           </BasicButton>
         </div>
       </div>
