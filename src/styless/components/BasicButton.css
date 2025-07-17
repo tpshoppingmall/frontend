@@ -1,0 +1,38 @@
+.basic-button {
+    border: 1px solid #ddd;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    text-decoration: none;
+    background-color: #fff;
+    color: #333;
+}
+
+/* 크기 변형 */
+.basic-button--small {
+    padding: 6px 12px;
+    font-size: 12px;
+    min-height: 28px;
+}
+
+.basic-button--medium {
+    padding: 8px 16px;
+    font-size: 14px;
+    min-height: 36px;
+}
+
+.basic-button--large {
+    padding: 12px 24px;
+    font-size: 16px;
+    min-height: 44px;
+}
+
+.basic-button:active {
+    background-color: #f0f0f0;
+    transform: scale(0.98);
+}
