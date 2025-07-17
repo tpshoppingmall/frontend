@@ -86,7 +86,12 @@
 
 .image-name {
     font-size: 14px;
-    color: #666;
+    color: #333;
+}
+
+.image-name.no-file {
+    color: #999;
+    font-style: italic;
 }
 
 .date-input {
