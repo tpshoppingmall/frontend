@@ -1,0 +1,6 @@
+.exhibition-pattern-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    width: 100%;
+}
