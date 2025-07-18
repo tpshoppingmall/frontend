@@ -37,7 +37,7 @@ const ExhibitionRegist = () => {
       const submitData = {
         exhibitionName: formData.name,
         exhibitionBrand: formData.brand,
-        exhibitionTime: formData.theme,
+        exhibitionTheme: formData.theme,
         exhibitionImage: formData.image,
         exhibitionPeriod: formData.startDate,
         saleStatus: formData.discountRate
