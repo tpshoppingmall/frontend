@@ -37,7 +37,7 @@ const ExhibitionRegist = () => {
         exhibitionTime: formData.theme,
         exhibitionImage: formData.image,
         exhibitionPeriod: formData.startDate,
-        saleStatus: formData.isActive ? 'Y' : 'N'
+        saleStatus: formData.discountRate
       };
 
       console.log('전송할 데이터:', submitData);
@@ -196,7 +196,7 @@ const ExhibitionRegist = () => {
                   onChange={handleInputChange}
                   className="form-checkbox"
               />
-              <span className="checkbox-text">전시</span>
+              <span className="checkbox-text"></span>
             </label>
           </div>
         </div>
