@@ -3,3 +3,12 @@
     justify-content: flex-end;
     margin-bottom: 20px;
 }
+
+.exhibition-title {
+    text-align: center;
+    font-size: 45px;
+    font-weight: 325;
+    color: #333;
+    margin-bottom: 30px;
+    margin-top: 20px;
+}

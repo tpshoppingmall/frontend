@@ -23,6 +23,10 @@ const ExhibitionListAdmin = () => {
 
   return(
       <div>
+        <div className="exhibition-title">
+          기획전
+        </div>
+
         <div className="exhibition-actions">
           <BasicButton
               size="medium"

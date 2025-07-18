@@ -8,7 +8,7 @@ const ExhibitionRegist = () => {
     name: '',
     brand: '',
     theme: '',
-    image: null,
+    image: '',
     startDate: '',
     discountRate: '',
     isActive: false
@@ -27,24 +27,17 @@ const ExhibitionRegist = () => {
     }));
   };
 
-  const handleImageChange = (e) => {
-    setFormData(prev => ({
-      ...prev,
-      image: e.target.files[0]
-    }));
-  };
-
   const handleSubmit = async () => {
     setIsLoading(true);
 
     try {
       const submitData = {
-        name: formData.name,
-        brand: formData.brand,
-        theme: formData.theme,
-        startDate: formData.startDate,
-        discountRate: formData.discountRate,
-        isActive: formData.isActive
+        exhibitionName: formData.name,
+        exhibitionBrand: formData.brand,
+        exhibitionTime: formData.theme,
+        exhibitionImage: formData.image,
+        exhibitionPeriod: formData.startDate,
+        saleStatus: formData.isActive ? 'Y' : 'N'
       };
 
       console.log('전송할 데이터:', submitData);
@@ -52,18 +45,32 @@ const ExhibitionRegist = () => {
       const response = await exhibitionService.createExhibition(submitData);
 
       console.log('API 응답:', response);
-      alert('기획전이 성공적으로 등록되었습니다!');
+
+      if (response.success) {
+        alert('기획전이 성공적으로 등록되었습니다!');
+        setFormData({
+          name: '',
+          brand: '',
+          theme: '',
+          image: '',
+          startDate: '',
+          discountRate: '',
+          isActive: false
+        });
+      } else {
+        alert(`등록 실패: ${response.message || '알 수 없는 오류'}`);
+      }
 
     } catch (error) {
       console.error('등록 실패:', error);
 
-      // axios 에러 처리
       if (error.response) {
         console.error('서버 응답 에러:', error.response.data);
-        alert(`등록 실패: ${error.response.data.message || '서버 오류'}`);
+        const errorMessage = error.response.data.message || '서버 오류가 발생했습니다.';
+        alert(`등록 실패: ${errorMessage}`);
       } else if (error.request) {
         console.error('요청 에러:', error.request);
-        alert('서버에 연결할 수 없습니다.');
+        alert('서버에 연결할 수 없습니다. 네트워크를 확인해주세요.');
       } else {
         alert('기획전 등록에 실패했습니다. 다시 시도해주세요.');
       }
@@ -72,31 +79,46 @@ const ExhibitionRegist = () => {
     }
   };
 
+  const handleCancel = () => {
+    setFormData({
+      name: '',
+      brand: '',
+      theme: '',
+      image: '',
+      startDate: '',
+      discountRate: '',
+      isActive: false
+    });
+  };
+
   return (
       <div className="exhibition-regist">
         <h2 className="regist-title">기획전 등록</h2>
 
         <div className="regist-form">
           <div className="form-row">
-            <label className="form-label">기획전명</label>
+            <label className="form-label">기획전명 *</label>
             <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
                 className="form-input"
+                placeholder="기획전명을 입력하세요"
+                required
             />
           </div>
 
           <div className="form-row">
-            <label className="form-label">기획전브랜드</label>
+            <label className="form-label">기획전브랜드 *</label>
             <select
                 name="brand"
                 value={formData.brand}
                 onChange={handleInputChange}
                 className="form-select"
+                required
             >
-              <option value="">BEAKER</option>
+              <option value="">브랜드를 선택하세요</option>
               {brands.map((brand, index) => (
                   <option key={index} value={brand}>
                     {brand}
@@ -106,14 +128,15 @@ const ExhibitionRegist = () => {
           </div>
 
           <div className="form-row">
-            <label className="form-label">기획전테마</label>
+            <label className="form-label">기획전테마 *</label>
             <select
                 name="theme"
                 value={formData.theme}
                 onChange={handleInputChange}
                 className="form-select"
+                required
             >
-              <option value="">NEW ARRIVAL</option>
+              <option value="">테마를 선택하세요</option>
               {themes.map((theme, index) => (
                   <option key={index} value={theme}>
                     {theme}
@@ -124,35 +147,25 @@ const ExhibitionRegist = () => {
 
           <div className="form-row">
             <label className="form-label">기획전이미지</label>
-            <div className="image-upload-container">
-              <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="image-input"
-                  id="image-upload"
-              />
-              <label htmlFor="image-upload" className="image-upload-label">
-                파일선택
-              </label>
-              {formData.image ? (
-                  <span className="image-name">{formData.image.name}</span>
-              ) : (
-                  <span className={`image-name ${!formData.image ? 'no-file' : ''}`}>
-                    {formData.image ? formData.image.name : '선택된 파일이 없습니다'}
-                  </span>
-              )}
-            </div>
+            <input
+                type="text"
+                name="image"
+                value={formData.image}
+                onChange={handleInputChange}
+                className="form-input"
+                placeholder="이미지 URL 또는 경로를 입력하세요"
+            />
           </div>
 
           <div className="form-row">
-            <label className="form-label">기획전전시기간</label>
+            <label className="form-label">기획전전시기간 *</label>
             <input
                 type="date"
                 name="startDate"
                 value={formData.startDate}
                 onChange={handleInputChange}
                 className="form-input date-input"
+                required
             />
           </div>
 
@@ -160,11 +173,14 @@ const ExhibitionRegist = () => {
             <label className="form-label">상품할인율</label>
             <div className="discount-container">
               <input
-                  type="text"
+                  type="number"
                   name="discountRate"
                   value={formData.discountRate}
                   onChange={handleInputChange}
                   className="discount-input"
+                  min="0"
+                  max="100"
+                  placeholder="0"
               />
               <span className="discount-unit">%</span>
             </div>
@@ -172,21 +188,32 @@ const ExhibitionRegist = () => {
 
           <div className="form-row">
             <label className="form-label">기획전전시여부</label>
-            <input
-                type="checkbox"
-                name="isActive"
-                checked={formData.isActive}
-                onChange={handleInputChange}
-                className="form-checkbox"
-            />
+            <label className="checkbox-container">
+              <input
+                  type="checkbox"
+                  name="isActive"
+                  checked={formData.isActive}
+                  onChange={handleInputChange}
+                  className="form-checkbox"
+              />
+              <span className="checkbox-text">전시</span>
+            </label>
           </div>
         </div>
 
         <div className="regist-actions">
           <BasicButton
               size="medium"
+              onClick={handleCancel}
+              className="cancel-button"
+          >
+            취소
+          </BasicButton>
+          <BasicButton
+              size="medium"
               onClick={handleSubmit}
-              disabled={isLoading}
+              disabled={isLoading || !formData.name || !formData.brand || !formData.theme || !formData.startDate}
+              className="submit-button"
           >
             {isLoading ? '저장 중...' : '저장'}
           </BasicButton>

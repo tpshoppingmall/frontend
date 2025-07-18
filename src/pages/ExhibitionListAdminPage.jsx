@@ -1,4 +1,4 @@
-import ExhibitionListAdmin from "../views/exhibition/ExhibitionListAdmin";
+import ExhibitionListAdmin from "../views/exhibitionadmin/ExhibitionListAdmin";
 
 const ExhibitionListAdminPage = () => {
   return (
