@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import BasicButton from "../../common/button/BasicButton";
 import "../../styless/exhibition/ExhibitionRegist.css";
 import { exhibitionService } from "../../services/exhibitionService";
+import {useNavigate} from "react-router-dom";
 
 const ExhibitionRegist = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +16,8 @@ const ExhibitionRegist = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const brands = ['Special', '10 Corso Como', '8 seconds', 'AMI', 'ANOTHER SHOP', 'Alice + Olivia', 'BEAKER', 'BEANPOLE'];
   const themes = ['NEW ARRIVALS', 'SALES', 'REVIEWS', 'POP-UP STORE', '기타 테마'];
@@ -48,6 +51,7 @@ const ExhibitionRegist = () => {
 
       if (response.success) {
         alert('기획전이 성공적으로 등록되었습니다!');
+        navigate("/exhibition/admin")
         setFormData({
           name: '',
           brand: '',
