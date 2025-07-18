@@ -28,5 +28,17 @@ export const exhibitionService = {
       console.error('기획전 목록 조회 실패:', error);
       throw error;
     }
+  },
+
+  /*기획전 상세 조회*/
+  getExhibitionById: async (exhibitionId) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/list/detailExhibition?exhibitionId=${exhibitionId}`);
+      return response.data;
+    } catch (error) {
+      console.error('기획전 상세 조회 실패:', error);
+      throw error;
+    }
   }
+
 };

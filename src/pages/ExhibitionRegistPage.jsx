@@ -1,4 +1,4 @@
-import ExhibitionRegist from "../views/exhibitionadmin/ExhibitionRegist";
+import ExhibitionRegist from "../views/exhibitionadmin/list/ExhibitionRegist";
 
 const ExhibitionRegistPage = () => {
   return (

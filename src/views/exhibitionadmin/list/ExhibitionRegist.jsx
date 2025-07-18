@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import BasicButton from "../../common/button/BasicButton";
-import "../../styless/exhibition/ExhibitionRegist.css";
-import { exhibitionService } from "../../services/exhibitionService";
+import BasicButton from "../../../common/button/BasicButton";
+import "../../../styless/exhibition/ExhibitionRegist.css";
+import { exhibitionService } from "../../../services/exhibitionService";
 import {useNavigate} from "react-router-dom";
 
 const ExhibitionRegist = () => {
@@ -93,6 +93,7 @@ const ExhibitionRegist = () => {
       discountRate: '',
       isActive: false
     });
+    navigate("/exhibition/admin/");
   };
 
   return (

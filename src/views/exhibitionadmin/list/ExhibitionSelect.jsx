@@ -1,5 +1,5 @@
 import React from 'react';
-import "../../styless/exhibition/ExhibitionSelect.css";
+import "../../../styless/exhibition/ExhibitionSelect.css";
 
 const ExhibitionSelect = ({ selectedBrand, selectedTheme, onBrandChange, onThemeChange }) => {
   const brands = ['모든 브랜드', 'Special', '10 Corso Como', '8 seconds', 'AMI', 'ANOTHER SHOP', 'Alice + Olivia', "BEAKER", "BEANPOLE"];
